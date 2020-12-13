@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PeBank.API.Contracts\PeBank.API.Contracts.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Transaction\Get\" />
+    <Folder Include="Transaction\Create\" />
+  </ItemGroup>
+
+</Project>
