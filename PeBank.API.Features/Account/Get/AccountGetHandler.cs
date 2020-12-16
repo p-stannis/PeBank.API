@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PeBank.API.Features
 {
-    public class CreateAccountHandler
+    class AccountGetHandler
     {
     }
 }

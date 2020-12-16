@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AutoMapper;
+using PeBank.API.Entities;
 
 namespace PeBank.API.Features
 {
-    class CustomerProfile
+    public class CustomerProfile : Profile
     {
+        public CustomerProfile()
+        {
+            CreateMap<Customer, CustomerModel>();
+            CreateMap<CustomerCreateRequest, Customer>();
+        }
     }
 }

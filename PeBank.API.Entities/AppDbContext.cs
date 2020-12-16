@@ -18,6 +18,43 @@ namespace PeBank.API.Entities
             {
                 entityType.SetTableName(entityType.DisplayName());
             }
+
+            modelBuilder.Entity<AccountType>().HasData(
+               new AccountType
+               {
+                   Id = 1,
+                   Code = "CC",
+                   Description = "Checking Account"
+               },
+               new AccountType
+               {
+                   Id = 2,
+                   Code = "S",
+                   Description = "Savings"                   
+               });
+
+            modelBuilder.Entity<TransactionType>().HasData(
+                new TransactionType 
+                {
+                    Id = 1,
+                    Code = "D",
+                    Description= "Deposit",
+                    PercentCharge = 1,
+                },
+                new TransactionType
+                {
+                    Id = 2,
+                    Code = "W",
+                    Description = "Withdraw",
+                    FixedCharge = 4
+                },
+                new TransactionType
+                {
+                    Id = 3,
+                    Code = "T",
+                    Description = "Transfer",
+                    FixedCharge = 1,
+                });
         }
     }
 }
