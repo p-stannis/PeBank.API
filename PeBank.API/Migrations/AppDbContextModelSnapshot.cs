@@ -39,7 +39,8 @@ namespace PeBank.API.Migrations
 
                     b.HasIndex("AccountTypeId");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerId", "AccountTypeId")
+                        .IsUnique();
 
                     b.ToTable("Account");
                 });

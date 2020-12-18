@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MediatR;
 
 namespace PeBank.API.Features
 {
-    class AccountGetRequest
+    public class AccountGetRequest : IRequest<AccountModel>
     {
+        public int AccountId { get; set; }
+        public int CustomerId { get; set; }
     }
 }

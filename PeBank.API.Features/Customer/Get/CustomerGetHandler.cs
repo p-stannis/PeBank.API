@@ -20,7 +20,7 @@ namespace PeBank.API.Features
 
         public Task<CustomerModel> Handle(CustomerGetRequest request, CancellationToken cancellationToken)
         {
-            var customer = _repository.Customer.FindById(request.Id, new List<string> { "Accounts "});
+            var customer = _repository.Customer.FindById(request.Id, new List<string> { "Accounts"});
 
             var result = _mapper.Map<CustomerModel>(customer);
 

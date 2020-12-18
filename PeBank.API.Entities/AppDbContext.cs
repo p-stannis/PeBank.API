@@ -2,7 +2,7 @@
 
 namespace PeBank.API.Entities
 {
-    public class AppDbContext : DbContext   
+    public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -12,12 +12,17 @@ namespace PeBank.API.Entities
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<TransactionType> TransactionType { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
                 entityType.SetTableName(entityType.DisplayName());
             }
+
+            modelBuilder.Entity<Account>()
+                .HasIndex(a => new { a.CustomerId, a.AccountTypeId })
+                .IsUnique();
+
 
             modelBuilder.Entity<AccountType>().HasData(
                new AccountType
@@ -30,15 +35,15 @@ namespace PeBank.API.Entities
                {
                    Id = 2,
                    Code = "S",
-                   Description = "Savings"                   
+                   Description = "Savings"
                });
 
             modelBuilder.Entity<TransactionType>().HasData(
-                new TransactionType 
+                new TransactionType
                 {
                     Id = 1,
                     Code = "D",
-                    Description= "Deposit",
+                    Description = "Deposit",
                     PercentCharge = 1,
                 },
                 new TransactionType

@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AutoMapper;
+using PeBank.API.Entities;
 
 namespace PeBank.API.Features
 {
-    public class TransactionProfile
+    public class TransactionProfile : Profile
     {
+        public TransactionProfile()
+        {
+            CreateMap<TransactionCreateRequest, Transaction>();
+            CreateMap<Transaction, TransactionModel>();
+        }
     }
 }

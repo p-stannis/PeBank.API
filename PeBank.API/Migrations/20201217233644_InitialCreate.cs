@@ -132,9 +132,10 @@ namespace PeBank.API.Migrations
                 column: "AccountTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Account_CustomerId",
+                name: "IX_Account_CustomerId_AccountTypeId",
                 table: "Account",
-                column: "CustomerId");
+                columns: new[] { "CustomerId", "AccountTypeId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transaction_AccountId",

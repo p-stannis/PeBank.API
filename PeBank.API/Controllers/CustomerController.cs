@@ -23,8 +23,8 @@ namespace PeBank.API.Controllers
 
         /// <summary>Gets Customer</summary>
         /// <param name="customerId">Client Identifier</param>
-        /// <returns>The newly created Customer</returns>
-        /// <response code="201">Returns the newly created Customer</response>
+        /// <returns>Customer</returns>
+        /// <response code="201">Returns the Customer</response>
         /// <response code="400">If client id is not specified, 
         /// <response code="404">If client is not found
         /// </response>

@@ -10,7 +10,7 @@ using PeBank.API.Entities;
 namespace PeBank.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201215213817_InitialCreate")]
+    [Migration("20201217233644_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,7 +41,8 @@ namespace PeBank.API.Migrations
 
                     b.HasIndex("AccountTypeId");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerId", "AccountTypeId")
+                        .IsUnique();
 
                     b.ToTable("Account");
                 });
