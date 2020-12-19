@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PeBank.API.Features;
@@ -7,7 +8,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using AutoMapper;
 
 namespace PeBank.API.Controllers
 {
@@ -44,6 +44,8 @@ namespace PeBank.API.Controllers
             try
             {
                 var account = await _mediator.Send(new AccountGetRequest { CustomerId = customerId, AccountId = accountId });
+
+                account.Transactions = account.Transactions.OrderByDescending(t => t.Date);
 
                 var statement = _mapper.Map<StatementModel>(account);
 
