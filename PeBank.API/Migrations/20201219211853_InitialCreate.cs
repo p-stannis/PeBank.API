@@ -36,6 +36,20 @@ namespace PeBank.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Operation",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(nullable: false),
+                    Description = table.Column<string>(maxLength: 255, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Operation", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TransactionType",
                 columns: table => new
                 {
@@ -43,8 +57,8 @@ namespace PeBank.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Code = table.Column<string>(maxLength: 5, nullable: false),
                     Description = table.Column<string>(maxLength: 25, nullable: false),
-                    FixedCharge = table.Column<float>(nullable: true),
-                    PercentCharge = table.Column<float>(nullable: true)
+                    FixedCharge = table.Column<double>(nullable: true),
+                    PercentCharge = table.Column<double>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,7 +71,6 @@ namespace PeBank.API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CurrentBalance = table.Column<float>(nullable: false),
                     CustomerId = table.Column<int>(nullable: false),
                     AccountTypeId = table.Column<int>(nullable: false)
                 },
@@ -86,7 +99,8 @@ namespace PeBank.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AccountId = table.Column<int>(nullable: false),
                     TransactionTypeId = table.Column<int>(nullable: false),
-                    Ammount = table.Column<float>(nullable: false),
+                    OperationId = table.Column<int>(nullable: false),
+                    Ammount = table.Column<double>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     Details = table.Column<string>(maxLength: 255, nullable: true)
                 },
@@ -97,6 +111,12 @@ namespace PeBank.API.Migrations
                         name: "FK_Transaction_Account_AccountId",
                         column: x => x.AccountId,
                         principalTable: "Account",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Transaction_Operation_OperationId",
+                        column: x => x.OperationId,
+                        principalTable: "Operation",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -121,9 +141,9 @@ namespace PeBank.API.Migrations
                 columns: new[] { "Id", "Code", "Description", "FixedCharge", "PercentCharge" },
                 values: new object[,]
                 {
-                    { 1, "D", "Deposit", null, 1f },
-                    { 2, "W", "Withdraw", 4f, null },
-                    { 3, "T", "Transfer", 1f, null }
+                    { 1, "D", "Deposit", null, 1.0 },
+                    { 2, "W", "Withdraw", 4.0, null },
+                    { 3, "T", "Transfer", 1.0, null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -143,6 +163,11 @@ namespace PeBank.API.Migrations
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Transaction_OperationId",
+                table: "Transaction",
+                column: "OperationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Transaction_TransactionTypeId",
                 table: "Transaction",
                 column: "TransactionTypeId");
@@ -155,6 +180,9 @@ namespace PeBank.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Account");
+
+            migrationBuilder.DropTable(
+                name: "Operation");
 
             migrationBuilder.DropTable(
                 name: "TransactionType");

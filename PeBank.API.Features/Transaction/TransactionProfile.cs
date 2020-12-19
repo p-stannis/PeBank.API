@@ -9,6 +9,7 @@ namespace PeBank.API.Features
         {
             CreateMap<TransactionCreateRequest, Transaction>();
             CreateMap<Transaction, TransactionModel>();
+            CreateMap<TransactionModel, Transaction>();
         }
     }
 }

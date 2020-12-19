@@ -10,7 +10,7 @@ using PeBank.API.Entities;
 namespace PeBank.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201217233644_InitialCreate")]
+    [Migration("20201219211853_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,9 +30,6 @@ namespace PeBank.API.Migrations
 
                     b.Property<int>("AccountTypeId")
                         .HasColumnType("int");
-
-                    b.Property<float>("CurrentBalance")
-                        .HasColumnType("real");
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
@@ -103,6 +100,25 @@ namespace PeBank.API.Migrations
                     b.ToTable("Customer");
                 });
 
+            modelBuilder.Entity("PeBank.API.Entities.Operation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Operation");
+                });
+
             modelBuilder.Entity("PeBank.API.Entities.Transaction", b =>
                 {
                     b.Property<int>("Id")
@@ -113,8 +129,8 @@ namespace PeBank.API.Migrations
                     b.Property<int>("AccountId")
                         .HasColumnType("int");
 
-                    b.Property<float>("Ammount")
-                        .HasColumnType("real");
+                    b.Property<double>("Ammount")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -123,12 +139,17 @@ namespace PeBank.API.Migrations
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
+                    b.Property<int>("OperationId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TransactionTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("OperationId");
 
                     b.HasIndex("TransactionTypeId");
 
@@ -152,11 +173,11 @@ namespace PeBank.API.Migrations
                         .HasColumnType("nvarchar(25)")
                         .HasMaxLength(25);
 
-                    b.Property<float?>("FixedCharge")
-                        .HasColumnType("real");
+                    b.Property<double?>("FixedCharge")
+                        .HasColumnType("float");
 
-                    b.Property<float?>("PercentCharge")
-                        .HasColumnType("real");
+                    b.Property<double?>("PercentCharge")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -168,21 +189,21 @@ namespace PeBank.API.Migrations
                             Id = 1,
                             Code = "D",
                             Description = "Deposit",
-                            PercentCharge = 1f
+                            PercentCharge = 1.0
                         },
                         new
                         {
                             Id = 2,
                             Code = "W",
                             Description = "Withdraw",
-                            FixedCharge = 4f
+                            FixedCharge = 4.0
                         },
                         new
                         {
                             Id = 3,
                             Code = "T",
                             Description = "Transfer",
-                            FixedCharge = 1f
+                            FixedCharge = 1.0
                         });
                 });
 
@@ -206,6 +227,12 @@ namespace PeBank.API.Migrations
                     b.HasOne("PeBank.API.Entities.Account", "Account")
                         .WithMany("Transactions")
                         .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PeBank.API.Entities.Operation", "Operation")
+                        .WithMany()
+                        .HasForeignKey("OperationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

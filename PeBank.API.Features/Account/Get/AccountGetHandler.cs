@@ -3,6 +3,8 @@ using MediatR;
 using PeBank.API.Contracts;
 using PeBank.API.Entities;
 using PeBank.API.Features.Utils.Exceptions;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,6 +29,8 @@ namespace PeBank.API.Features
 
             var result = _mapper.Map<AccountModel>(account);
 
+            result.Balance = result.Transactions.Sum(b => b.Ammount);
+
             return Task.FromResult(result);
         }
 
@@ -40,11 +44,11 @@ namespace PeBank.API.Features
 
         private Account GetAccount(AccountGetRequest request)
         {
-            var account = _repository.Account.FindById(request.AccountId);
+            var account = _repository.Account.FindById(request.AccountId, new List<string> { "Transactions" , "Transactions.TransactionType" });
 
             if (account == null)
             {
-                throw new NotFoundException("Account does not exist");
+                throw new NotFoundException($"Account {request.AccountId} does not exist");
             }
 
             return account;

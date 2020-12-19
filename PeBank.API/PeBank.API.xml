@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PeBank.API</name>
+    </assembly>
+    <members>
+        <member name="M:PeBank.API.Controllers.AccountController.Get(System.Int32,System.Int32)">
+            <summary>Gets Account</summary>
+            <remarks>Gets an account based on query.</remarks>
+            <param name="accountId">Account Identifier</param>
+            <param name="customerId">Client Identifier</param>
+            <returns>The Account</returns>
+            <response code="200">Returns the Account</response>
+            <response code="400">If client id or account id is not specified</response>
+            <response code="404">If account is not found</response>
+        </member>
+        <member name="M:PeBank.API.Controllers.AccountController.Create(PeBank.API.Features.AccountCreateRequest)">
+             <summary>Creates a new Account</summary>
+             <remarks>
+             Sample request:
+            
+                 POST /api/account
+                 {
+                     "customerId": 1,
+                     "accountTypeId": 2
+                 }
+            
+             </remarks>
+             <param name="request">Account information</param>
+             <returns>The newly created Account</returns>
+             <response code="201">Returns the newly created Account</response>
+             <response code="400">If client's name or email are not specified
+             </response>
+        </member>
+        <member name="M:PeBank.API.Controllers.CustomerController.Get(System.Int32)">
+            <summary>Gets Customer</summary>
+            <param name="customerId">Client Identifier</param>
+            <returns>Customer</returns>
+            <response code="201">Returns the Customer</response>
+            <response code="400">If client id is not specified </response>
+            <response code="404">If client is not found </response>
+        </member>
+        <member name="M:PeBank.API.Controllers.CustomerController.Create(PeBank.API.Features.CustomerCreateRequest)">
+             <summary>Creates a new Customer</summary>
+             <remarks>
+             Sample request:
+            
+                 POST /api/customer
+                 {
+                     "name": "John Doe",
+                     "email": "john.doe@pebank.com"
+                 }
+            
+             </remarks>
+             <param name="request">Client information</param>
+             <returns>The newly created Customer</returns>
+             <response code="201">Returns the newly created Customer</response>
+             <response code="400">If client's name or email are not specified
+             </response>
+        </member>
+        <member name="M:PeBank.API.Controllers.DepositController.Create(PeBank.API.Features.DepositCreateRequest)">
+             <summary>Makes a deposit</summary>
+             <param name="request">Deposit request</param>
+             <remarks>
+             Sample request:
+            
+                 POST /api/deposit
+                 {
+                     "customerId": 1,
+                     "accountId": 1,
+                     "ammount": 1000,
+                     "details": "Depositing $1000 to my account"
+                 }
+             </remarks>
+             <returns>The deposit transaction</returns>
+             <response code="201">Returns the deposit transaction</response>
+             <response code="400">If client id or account id is not specified or an ammount is not specified or if account does not belong to customer </response>
+             <response code="404">If account is not found </response>
+        </member>
+        <member name="M:PeBank.API.Controllers.StatementController.Get(System.Int32,System.Int32)">
+            <summary>Gets the account's statements</summary>
+            <remarks>Gets the bank statements based on query.</remarks>
+            <param name="accountId">Account Identifier</param>
+            <param name="customerId">Client Identifier</param>
+            <returns>The Bank statement</returns>
+            <response code="200">Returns the account's statement</response>
+            <response code="400">If client id or account id is not specified</response>
+            <response code="404">If account is not found</response>
+        </member>
+        <member name="M:PeBank.API.Controllers.TransferController.Create(PeBank.API.Features.TransferCreateRequest)">
+             <summary>Makes a transfer</summary>
+             <remarks>
+             Sample request:
+            
+                 POST /api/transfer
+                 {
+                     "customerId": 1,
+                     "accountId": 1,
+                     "ammount": 1000,
+                     "details": "Depositing $1000 to my friends account",
+                     "recipientCustomerId": 2,
+                     "recipientAccountId": 2,
+                 }
+             </remarks>
+             <param name="request">Transfer request</param>
+             <returns>The transfer transactions</returns>
+             <response code="201">Returns the transfer transactios</response>
+             <response code="400">If client id or account id is not specified or an ammount is not specified or if account does not belong to customer </response>
+             <response code="404">If account is not found </response>
+        </member>
+        <member name="M:PeBank.API.Controllers.WithdrawController.Create(PeBank.API.Features.WithdrawCreateRequest)">
+             <summary>Makes a withdrawal from account</summary>
+             <param name="request">Withdrawal request</param>
+             <remarks>
+             Sample request:
+            
+                 POST /api/withdraw
+                 {
+                     "customerId": 1,
+                     "accountId": 1,
+                     "ammount": 500.50,
+                     "details": "Withdrawing $1000 from my account"
+                 }
+             </remarks>
+             <returns>The Withdrawal transactions</returns>
+             <response code="201">Returns the Withdrawal transactios</response>
+             <response code="400">If client id or account id is not specified or an ammount is not specified 
+             or if account does not belong to customer or if balance will be negative </response>
+             <response code="404">If account is not found </response>
+        </member>
+    </members>
+</doc>

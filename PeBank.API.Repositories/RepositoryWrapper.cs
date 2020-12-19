@@ -10,6 +10,7 @@ namespace PeBank.API.Repositories
         private IAccountRepository _account;
         private IAccountTypeRepository _accountType;
         private ICustomerRepository _customer;
+        private IOperationRepository _operation;
         private ITransactionRepository _transaction;
         private ITransactionTypeRepository _transactionType;
 
@@ -42,6 +43,15 @@ namespace PeBank.API.Repositories
             {
                 if (_customer == null) _customer = new CustomerRepository(_dbContext);
                 return _customer;
+            }
+        }
+
+        public IOperationRepository Operation
+        {
+            get
+            {
+                if (_operation == null) _operation = new OperationRepository(_dbContext);
+                return _operation;
             }
         }
 

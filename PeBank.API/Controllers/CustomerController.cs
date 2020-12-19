@@ -25,9 +25,8 @@ namespace PeBank.API.Controllers
         /// <param name="customerId">Client Identifier</param>
         /// <returns>Customer</returns>
         /// <response code="201">Returns the Customer</response>
-        /// <response code="400">If client id is not specified, 
-        /// <response code="404">If client is not found
-        /// </response>
+        /// <response code="400">If client id is not specified </response>
+        /// <response code="404">If client is not found </response>
         [HttpGet]
         [ProducesResponseType(typeof(CustomerModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -44,7 +43,7 @@ namespace PeBank.API.Controllers
             return result;
         }
 
-        /// <summary>New Customer</summary>
+        /// <summary>Creates a new Customer</summary>
         /// <remarks>
         /// Sample request:
         ///

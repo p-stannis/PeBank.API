@@ -1,19 +1,14 @@
 ﻿using MediatR;
-using System.ComponentModel.DataAnnotations;
+using PeBank.API.Entities;
+using System;
+using System.Collections.Generic;
 
 namespace PeBank.API.Features
 {
-    public class TransactionCreateRequest : IRequest<TransactionModel>
+    public class TransactionCreateRequest : IRequest<IEnumerable<TransactionModel>>
     {
-        [Required(ErrorMessage = "{0} is required")]
-        public int? AccountId {get;set;}
-
-        [Required(ErrorMessage = "{0} is required")]
-        public int? TransactionTypeId { get; set; }
-
-        [Required(ErrorMessage = "{0} is required")]
-        public float Ammount { get; set; }
-
-        public string Details { get; set; }
+       public DateTime OperationDate { get; set; }
+       public string OperationDetails { get; set; }
+        public IEnumerable<TransactionModel> Transactions { get; set; }
     }
 }

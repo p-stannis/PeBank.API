@@ -30,7 +30,6 @@ namespace PeBank.API.Features
             var accountToCreate = new Account
             {
                 AccountTypeId = (int)request.AccountTypeId,
-                CurrentBalance = 0,
                 CustomerId = (int)request.CustomerId
             };
 

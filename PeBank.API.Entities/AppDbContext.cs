@@ -9,6 +9,7 @@ namespace PeBank.API.Entities
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountType> AccountTypes { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Operation> Operations { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<TransactionType> TransactionType { get; set; }
 

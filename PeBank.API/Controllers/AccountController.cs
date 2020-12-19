@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PeBank.API.Features;
 using PeBank.API.Features.Utils.Exceptions;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 
@@ -23,13 +24,13 @@ namespace PeBank.API.Controllers
         }
 
         /// <summary>Gets Account</summary>
+        /// <remarks>Gets an account based on query.</remarks>
         /// <param name="accountId">Account Identifier</param>
         /// <param name="customerId">Client Identifier</param>
         /// <returns>The Account</returns>
         /// <response code="200">Returns the Account</response>
-        /// <response code="400">If client id or account id is not specified, 
-        /// <response code="404">If account is not found
-        /// </response>
+        /// <response code="400">If client id or account id is not specified</response>
+        /// <response code="404">If account is not found</response>
         [HttpGet]
         [ProducesResponseType(typeof(AccountModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -38,9 +39,11 @@ namespace PeBank.API.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new AccountGetRequest { CustomerId = customerId, AccountId = accountId });
+                var account = await _mediator.Send(new AccountGetRequest { CustomerId = customerId, AccountId = accountId });
 
-                return result;
+                account.Transactions = null;
+
+                return account;
             }
             catch (BusinessException businessException)
             {
@@ -52,7 +55,7 @@ namespace PeBank.API.Controllers
             }
         }
 
-        /// <summary>New Account</summary>
+        /// <summary>Creates a new Account</summary>
         /// <remarks>
         /// Sample request:
         ///

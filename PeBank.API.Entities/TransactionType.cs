@@ -10,7 +10,7 @@ namespace PeBank.API.Entities
         [Required]
         [StringLength(25)]
         public string Description { get; set; }
-        public float? FixedCharge { get; set; }
-        public float? PercentCharge { get; set; }
+        public double? FixedCharge { get; set; }
+        public double? PercentCharge { get; set; }
     }
 }
