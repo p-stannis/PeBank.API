@@ -13,6 +13,7 @@
             <response code="200">Returns the Account</response>
             <response code="400">If client id or account id is not specified</response>
             <response code="404">If account is not found</response>
+            <response code="409">If a business exception has been encountered</response>
         </member>
         <member name="M:PeBank.API.Controllers.AccountController.Create(PeBank.API.Features.AccountCreateRequest)">
              <summary>Creates a new Account</summary>
@@ -30,6 +31,7 @@
              <returns>The newly created Account</returns>
              <response code="201">Returns the newly created Account</response>
              <response code="400">If client's name or email are not specified
+             <response code="409">If a business exception has been encountered</response>
              </response>
         </member>
         <member name="M:PeBank.API.Controllers.CustomerController.Get(System.Int32)">
@@ -75,7 +77,8 @@
              <returns>The deposit transaction</returns>
              <response code="201">Returns the deposit transaction</response>
              <response code="400">If client id or account id is not specified or an ammount is not specified or if account does not belong to customer </response>
-             <response code="404">If account is not found </response>
+             <response code="404">If account is not found </response>    
+             <response code="409">If a business exception has been encountered</response>
         </member>
         <member name="M:PeBank.API.Controllers.StatementController.Get(System.Int32,System.Int32)">
             <summary>Gets the account's statements</summary>
@@ -85,7 +88,8 @@
             <returns>The Bank statement</returns>
             <response code="200">Returns the account's statement</response>
             <response code="400">If client id or account id is not specified</response>
-            <response code="404">If account is not found</response>
+            <response code="404">If account is not found</response>  
+            <response code="409">If a business exception has been encountered</response>
         </member>
         <member name="M:PeBank.API.Controllers.TransferController.Create(PeBank.API.Features.TransferCreateRequest)">
              <summary>Makes a transfer</summary>
@@ -107,6 +111,7 @@
              <response code="201">Returns the transfer transactios</response>
              <response code="400">If client id or account id is not specified or an ammount is not specified or if account does not belong to customer </response>
              <response code="404">If account is not found </response>
+             <response code="409">If a business exception has been encountered</response>
         </member>
         <member name="M:PeBank.API.Controllers.WithdrawController.Create(PeBank.API.Features.WithdrawCreateRequest)">
              <summary>Makes a withdrawal from account</summary>
@@ -127,6 +132,7 @@
              <response code="400">If client id or account id is not specified or an ammount is not specified 
              or if account does not belong to customer or if balance will be negative </response>
              <response code="404">If account is not found </response>
+             <response code="409">If a business exception has been encountered</response>
         </member>
     </members>
 </doc>

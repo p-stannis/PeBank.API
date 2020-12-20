@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeBank.API", "PeBank.API\PeBank.API.csproj", "{23104048-BDCC-49C4-A23A-E0E262188F27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeBank.API", "PeBank.API\PeBank.API.csproj", "{23104048-BDCC-49C4-A23A-E0E262188F27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeBank.API.Contracts", "PeBank.API.Contracts\PeBank.API.Contracts.csproj", "{AD4A6E3E-5194-45C5-AFF0-DA8EE5CE0270}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeBank.API.Contracts", "PeBank.API.Contracts\PeBank.API.Contracts.csproj", "{AD4A6E3E-5194-45C5-AFF0-DA8EE5CE0270}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeBank.API.Repositories", "PeBank.API.Repositories\PeBank.API.Repositories.csproj", "{BBE08A65-0938-44DC-AF9D-56E75E62CD70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeBank.API.Repositories", "PeBank.API.Repositories\PeBank.API.Repositories.csproj", "{BBE08A65-0938-44DC-AF9D-56E75E62CD70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeBank.API.Features", "PeBank.API.Features\PeBank.API.Features.csproj", "{2606D8F6-041E-43E6-9E15-D46F2AC7ECD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeBank.API.Features", "PeBank.API.Features\PeBank.API.Features.csproj", "{2606D8F6-041E-43E6-9E15-D46F2AC7ECD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeBank.API.Entities", "PeBank.API.Entities\PeBank.API.Entities.csproj", "{ABEDB64E-B600-4BAD-9C94-1F16FB09B1B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeBank.API.Entities", "PeBank.API.Entities\PeBank.API.Entities.csproj", "{ABEDB64E-B600-4BAD-9C94-1F16FB09B1B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeBank.API.Tests", "PeBank.API.Tests\PeBank.API.Tests.csproj", "{54E86D0A-7841-4981-97A6-B38D28A0CE00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{ABEDB64E-B600-4BAD-9C94-1F16FB09B1B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABEDB64E-B600-4BAD-9C94-1F16FB09B1B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABEDB64E-B600-4BAD-9C94-1F16FB09B1B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54E86D0A-7841-4981-97A6-B38D28A0CE00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54E86D0A-7841-4981-97A6-B38D28A0CE00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54E86D0A-7841-4981-97A6-B38D28A0CE00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54E86D0A-7841-4981-97A6-B38D28A0CE00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

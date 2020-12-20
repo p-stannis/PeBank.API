@@ -42,9 +42,14 @@ namespace PeBank.API.Controllers
         /// <response code="400">If client id or account id is not specified or an ammount is not specified 
         /// or if account does not belong to customer or if balance will be negative </response>
         /// <response code="404">If account is not found </response>
+        /// <response code="409">If a business exception has been encountered</response>
+
         [HttpPost]
+        [ProducesErrorResponseType(typeof(void))]
         [ProducesResponseType(typeof(TransactionModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult<IEnumerable<TransactionModel>>> Create([FromBody, Required] WithdrawCreateRequest request)
         {
             try
@@ -55,11 +60,11 @@ namespace PeBank.API.Controllers
             }
             catch (BusinessException businessException)
             {
-                return BadRequest(new { message = businessException.Message });
+                return Conflict(new { message = businessException.Message });
             }
             catch (NotFoundException notFoundException)
             {
-                return BadRequest(new { message = notFoundException.Message });
+                return NotFound(new { message = notFoundException.Message });
             }
 
         }

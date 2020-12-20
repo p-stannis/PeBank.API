@@ -28,6 +28,7 @@ namespace PeBank.API.Controllers
         /// <response code="400">If client id is not specified </response>
         /// <response code="404">If client is not found </response>
         [HttpGet]
+        [ProducesErrorResponseType(typeof(void))]
         [ProducesResponseType(typeof(CustomerModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -64,10 +65,6 @@ namespace PeBank.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<CustomerModel>> Create([FromBody, Required] CustomerCreateRequest request)
         {
-            if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Name))
-            {
-                return BadRequest(new { message = "You must provide both the name and email from customer." });
-            }
             var result = await _mediator.Send(request);
 
             return CreatedAtAction(nameof(Create), result);
