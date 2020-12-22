@@ -2,13 +2,11 @@
 using PeBank.API.Contracts;
 using PeBank.API.Entities;
 using PeBank.API.Features.Utils.Exceptions;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PeBank.API.Features.Transfer
+namespace PeBank.API.Features
 {
     public class TransferCreateHandler : IRequestHandler<TransferCreateRequest, IEnumerable<TransactionModel>>
     {
@@ -23,12 +21,12 @@ namespace PeBank.API.Features.Transfer
 
         public async Task<IEnumerable<TransactionModel>> Handle(TransferCreateRequest request, CancellationToken cancellationToken)
         {
-            var transferTransactionType = _repository.TransactionTypeRepository.FindSingle(tt => tt.Code == "T");
-
             if (request.AccountId == request.RecipientAccountId)
             {
                 throw new BusinessException("You cannot transfer to your own account.");
             }
+
+            var transferTransactionType = _repository.TransactionTypeRepository.FindSingle(tt => tt.Code == "T");
 
             AccountModel accountFrom = await GetAccount(request.AccountId.Value, request.CustomerId, cancellationToken);
 
@@ -64,28 +62,24 @@ namespace PeBank.API.Features.Transfer
             AccountModel accountTo,
             TransactionType transferTransactionType)
         {
-            List<TransactionModel> transactionsToCreate = BuildTransactions(request, accountFrom, accountTo, transferTransactionType);
+            List<TransactionModel> transactionsToCreate = BuildTransferTransactions(request, accountFrom, accountTo, transferTransactionType);
 
             var transactions = await _mediator.Send(new TransactionCreateRequest
             {
                 Transactions = transactionsToCreate,
-                OperationDate = transactionsToCreate.First().Date,
                 OperationDetails = $"Transfer from Account {accountFrom.Id} to Account {accountTo.Id}. " +
-                                   $"Ammount of ${request.Ammount} on {transactionsToCreate.First().Date}"
+                                   $"Ammount of ${request.Ammount} "
             });
 
             return transactions;
         }
 
-        private static List<TransactionModel> BuildTransactions(TransferCreateRequest request, AccountModel accountFrom, AccountModel accountTo, TransactionType transferTransactionType)
+        public List<TransactionModel> BuildTransferTransactions(TransferCreateRequest request, AccountModel accountFrom, AccountModel accountTo, TransactionType transferTransactionType)
         {
-            var operationDate = DateTime.Now;
-
             var transferAccountFromTransaction = new TransactionModel
             {
                 AccountId = accountFrom.Id,
                 Ammount = -request.Ammount,
-                Date = operationDate,
                 Details = request.Details,
                 TransactionTypeId = transferTransactionType.Id
             };
@@ -94,7 +88,6 @@ namespace PeBank.API.Features.Transfer
             {
                 AccountId = accountFrom.Id,
                 Ammount = -transferTransactionType.FixedCharge.Value,
-                Date = operationDate,
                 Details = $"Bank transfer surcharge of ${transferTransactionType.FixedCharge.Value}",
                 TransactionTypeId = transferTransactionType.Id
             };
@@ -103,7 +96,6 @@ namespace PeBank.API.Features.Transfer
             {
                 AccountId = accountTo.Id,
                 Ammount = request.Ammount,
-                Date = operationDate,
                 Details = request.Details,
                 TransactionTypeId = transferTransactionType.Id
             };

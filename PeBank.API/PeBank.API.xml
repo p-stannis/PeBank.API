@@ -34,6 +34,13 @@
              <response code="409">If a business exception has been encountered</response>
              </response>
         </member>
+        <member name="M:PeBank.API.Controllers.AccountTypeController.Get">
+            <summary>Gets Account Types</summary>
+            <returns>Account Types</returns>
+            <response code="200">Returns the Account Types</response>
+            <response code="400">If client id or account id is not specified</response>
+            <response code="404">If account is not found</response>
+        </member>
         <member name="M:PeBank.API.Controllers.CustomerController.Get(System.Int32)">
             <summary>Gets Customer</summary>
             <param name="customerId">Client Identifier</param>
@@ -58,6 +65,7 @@
              <returns>The newly created Customer</returns>
              <response code="201">Returns the newly created Customer</response>
              <response code="400">If client's name or email are not specified
+             <response code="409">If a business exception has been encountered</response>
              </response>
         </member>
         <member name="M:PeBank.API.Controllers.DepositController.Create(PeBank.API.Features.DepositCreateRequest)">

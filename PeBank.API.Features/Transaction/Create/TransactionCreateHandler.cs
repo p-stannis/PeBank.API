@@ -2,6 +2,7 @@
 using MediatR;
 using PeBank.API.Contracts;
 using PeBank.API.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -26,11 +27,14 @@ namespace PeBank.API.Features
 
             using (_repository.UseTransaction())
             {
-                var operation = CreateOperation(request);
+                var operationDate = DateTime.Now;
+                var operation = CreateOperation(request, operationDate);
 
                 transactionsToCreate.ToList().ForEach(t =>
                 {
                     t.Operation = operation;
+                    t.OperationId = operation.Id;
+                    t.Date = operationDate;
                 });
 
                 _repository.TransactionRepository.CreateMany(transactionsToCreate);
@@ -41,12 +45,12 @@ namespace PeBank.API.Features
             return Task.FromResult(result);
         }
 
-        private Operation CreateOperation(TransactionCreateRequest request)
+        private Operation CreateOperation(TransactionCreateRequest request, DateTime operationDateTime)
         {
             var operationToCreate = new Operation
             {
-                Date = request.OperationDate,
-                Description = request.OperationDetails
+                Date = operationDateTime,
+                Description = request.OperationDetails + $"{operationDateTime}"
             };
 
             _repository.Operation.Create(operationToCreate);

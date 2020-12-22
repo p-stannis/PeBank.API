@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PeBank.API.Features;
+using PeBank.API.Features.Utils.Exceptions;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
 using System.Threading.Tasks;
@@ -59,15 +60,25 @@ namespace PeBank.API.Controllers
         /// <returns>The newly created Customer</returns>
         /// <response code="201">Returns the newly created Customer</response>
         /// <response code="400">If client's name or email are not specified
+        /// <response code="409">If a business exception has been encountered</response>
         /// </response>
         [HttpPost]
+        [ProducesErrorResponseType(typeof(void))]
         [ProducesResponseType(typeof(CustomerModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult<CustomerModel>> Create([FromBody, Required] CustomerCreateRequest request)
         {
-            var result = await _mediator.Send(request);
+            try
+            {
+                var result = await _mediator.Send(request);
 
-            return CreatedAtAction(nameof(Create), result);
+                return CreatedAtAction(nameof(Create), result);
+            }
+            catch (BusinessException businessException)
+            {
+                return Conflict(new { message = businessException.Message});
+            }
         }
     }
 }

@@ -2,7 +2,6 @@
 using PeBank.API.Contracts;
 using PeBank.API.Entities;
 using PeBank.API.Features.Utils.Exceptions;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,13 +39,23 @@ namespace PeBank.API.Features
 
         private async Task<IEnumerable<TransactionModel>> CreateWithdrawalTransaction(WithdrawCreateRequest request, AccountModel account, TransactionType withdrawalTransactionType)
         {
-            var operationDate = DateTime.Now;
+            List<TransactionModel> transactionsToCreate = BuildWithdrawalTransactions(request, account, withdrawalTransactionType);
 
+            var transactions = await _mediator.Send(new TransactionCreateRequest
+            {
+                Transactions = transactionsToCreate,
+                OperationDetails = $"Withdrawal: ammount ${request.Ammount} "
+            });
+
+            return transactions;
+        }
+
+        public List<TransactionModel> BuildWithdrawalTransactions(WithdrawCreateRequest request, AccountModel account, TransactionType withdrawalTransactionType)
+        {
             var withdrawalTransaction = new TransactionModel
             {
                 AccountId = account.Id,
                 Ammount = -request.Ammount,
-                Date = operationDate,
                 Details = request.Details,
                 TransactionTypeId = withdrawalTransactionType.Id
             };
@@ -55,24 +64,11 @@ namespace PeBank.API.Features
             {
                 AccountId = account.Id,
                 Ammount = -withdrawalTransactionType.FixedCharge.Value,
-                Date = operationDate,
                 Details = $"Bank withdrawal surcharge of ${withdrawalTransactionType.FixedCharge.Value}",
                 TransactionTypeId = withdrawalTransactionType.Id
             };
 
-            List<TransactionModel> transactionsToCreate = new List<TransactionModel>();
-
-            transactionsToCreate.Add(withdrawalTransaction);
-            transactionsToCreate.Add(withdrawalSurcharge);
-
-            var transactions = await _mediator.Send(new TransactionCreateRequest
-            {
-                Transactions = transactionsToCreate,
-                OperationDate = operationDate,
-                OperationDetails = $"Withdrawal of ${request.Ammount} on  {operationDate}"
-            });
-
-            return transactions;
+            return new List<TransactionModel> { withdrawalTransaction, withdrawalSurcharge };
         }
 
         private static void ValidateWithdrawal(WithdrawCreateRequest request, AccountModel account, TransactionType transactionType)

@@ -2,6 +2,7 @@
 using MediatR;
 using PeBank.API.Contracts;
 using PeBank.API.Entities;
+using PeBank.API.Features.Utils.Exceptions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,6 +22,13 @@ namespace PeBank.API.Features
         public Task<CustomerModel> Handle(CustomerCreateRequest request, CancellationToken cancellationToken)
         {
             var customerToCreate = _mapper.Map<Customer>(request);
+
+            var existingCustomer = _repository.Customer.FindSingle(c => c.Email == request.Email);
+
+            if(existingCustomer != null) 
+            {
+                throw new BusinessException("Customer already exists");
+            }
 
             using (_repository.UseTransaction())
             {

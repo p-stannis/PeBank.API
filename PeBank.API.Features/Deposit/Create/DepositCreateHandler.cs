@@ -13,7 +13,7 @@ namespace PeBank.API.Features
         private readonly IMediator _mediator;
         private readonly IRepositoryWrapper _repository;
 
-        public DepositCreateHandler( IMediator mediator, IRepositoryWrapper repository)
+        public DepositCreateHandler(IMediator mediator, IRepositoryWrapper repository)
         {
             _mediator = mediator;
             _repository = repository;
@@ -32,15 +32,25 @@ namespace PeBank.API.Features
 
         private async Task<IEnumerable<TransactionModel>> CreateDepositTransaction(DepositCreateRequest request, AccountModel account, TransactionType depositTransactionType)
         {
-            var decimalValueToCharge = depositTransactionType.PercentCharge / 100;
+            List<TransactionModel> depositTransactions = BuildDepositTransaction(request, account, depositTransactionType);
 
-            var operationDate = DateTime.Now;
+            var transactions = await _mediator.Send(new TransactionCreateRequest
+            {
+                Transactions = depositTransactions,
+                OperationDetails = $"Deposit: ammount {request.Ammount} "
+            });
+
+            return transactions;
+        }
+
+        public List<TransactionModel> BuildDepositTransaction(DepositCreateRequest request, AccountModel account, TransactionType depositTransactionType)
+        {
+            var decimalValueToCharge = depositTransactionType.PercentCharge.Value / 100;
 
             var depositTransaction = new TransactionModel
             {
                 AccountId = account.Id,
                 Ammount = request.Ammount,
-                Date = operationDate,
                 Details = request.Details,
                 TransactionTypeId = depositTransactionType.Id
             };
@@ -48,20 +58,13 @@ namespace PeBank.API.Features
             var depositSurcharge = new TransactionModel
             {
                 AccountId = account.Id,
-                Ammount = -(decimalValueToCharge.Value * request.Ammount),
-                Date = operationDate,
+                Ammount = -(decimalValueToCharge * request.Ammount),
                 Details = $"Bank deposit surcharge of {depositTransactionType.PercentCharge}%",
                 TransactionTypeId = depositTransactionType.Id
             };
 
-            var transactions = await _mediator.Send(new TransactionCreateRequest
-            {
-                Transactions = new List<TransactionModel> { depositTransaction, depositSurcharge },
-                OperationDate = operationDate,
-                OperationDetails = $"Deposit of ${request.Ammount} on {operationDate}"
-            });
+            return new List<TransactionModel> { depositTransaction, depositSurcharge };
 
-            return transactions;
         }
 
         private async Task<AccountModel> GetAccount(DepositCreateRequest request, CancellationToken cancellationToken)
